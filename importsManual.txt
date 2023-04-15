@@ -1,3 +1,0 @@
-<a class="mx-4" href="/admin/deleteProduct/<%= products[i].prod_id %>">
-                                    <span class="btn btn-sm btn-primary detailBtn">Delete</span>
-</a>
