@@ -97,8 +97,9 @@ Backend:-
 At the end you might be thinking that there are too many names in the navbar 
 So yes
 
-It is a multiple Admin's Multiple Seller Website
+It is a multiple Admin's
+Multiple Seller Website
 There can be as many seller as users
-Like amazon of flipkart
+Like amazon or flipkart
 
 --------------------------------------------------------------------------------------
