@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta
+        name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+        <title>E-Commerce-CQ</title>
+    </head>
+    <style>
+        body {
+            background-image: linear-gradient(90deg,#000154,#9596d8);
+        }
+        .font {
+            font-family: monospace;
+            color: white;
+        }
+        .my-prod {
+            background-color: #030428;
+            color: white;
+            font-family: initial;
+        }
+        .my-desc  {
+            background-color: #5e5eb8;
+            color: white;
+            font-family: initial;
+        }
+        .btn_back {
+            background-color: #9596d8;
+        }
+        .btn_back:hover {
+            color: black;
+            background-color: white
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Modal Content */
+        .modal-content {
+            position: relative;
+            background-color: #000154;
+            color: white;
+            margin: auto;
+            padding: 0;
+            border: 3px solid #ebf4b3;
+            border-radius: 10px 50px 10px;
+            width: 50%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+
+            to {
+                top: 0;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+
+            to {
+                top: 0;
+                opacity: 1
+            }
+        }
+
+        /* The Close Button */
+        .close {
+            color: red;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .modal-body {
+            padding: 2px 16px;
+        }
+        @media only screen and (max-width: 600px) {
+            .changeDir {
+                flex-direction: column;
+            }
+            .btn_back {
+                width: 32vw;
+                margin-top: 2vh;
+            }
+            .modal-content {
+                width: 80%;
+                font-size: 0.7rem;
+                font-family: sans-serif;
+            }
+        }
+    </style>
+    <body>
+        <%if(name.length>2){ %>
+            <% name = JSON.parse(name) %>
+            <%- include('head',{name:name,item:0})  %>
+
+        <%}else{%>
+            <%- include('header',{name:JSON.parse(name)})  %>
+
+        <% } %>
+        <% if(products.length>0){ %>
+            <div class="container-sm">
+                <ul class="list-group">
+                    <li class="list-group-item my-desc mt-2">
+                        <div class="d-flex justify-content-around changeDir">
+                            <div class="container">
+                                <p>Product Name</p>
+                            </div>
+                            <div class="container">
+                                <p>Product Price</p>
+                            </div>
+                            <div class="container">
+                                <p>Quantity</p>
+                            </div>
+                            <div class="container">
+                                <p>Total Price</p>
+                            </div>
+                            <div class="container">
+                                <p>Order Status</p>
+                            </div>
+                            <div class="container">
+                                <p>Delievery Date</p>
+                            </div>
+                        </div>
+                    </li>
+                    <% products.forEach((e)=>{ %>
+                        <li class="list-group-item my-prod mt-2">
+                            <div class="d-flex justify-content-around changeDir">
+                                <div class="container">
+                                    <p><%= e.name %></p>
+                                </div>
+                                <div class="container">
+                                    <p>$ <%= e.price %></p>
+                                </div>
+                                <div class="container">
+                                    <p><%= e.quant %></p>
+                                </div>
+                                <div class="container">
+                                    <p><%= e.total_price %></p>
+                                </div>
+                                <div class="container">
+                                    <p><%= e.order_status%></p>
+                                </div>
+                                <div class="container">
+                                    <p><%= e.delievery_date%></p>
+                                </div>
+                            </div>
+                        </li>
+                    <% }) %>
+                </ul>
+            </div>
+        <% }else{ %>
+            <div class="container-sm">
+                <ul class="list-group">
+                    <li class="list-group-item my-prod mt-2">
+                        <div class="d-flex justify-content-around changeDir">
+                            <p>
+                                <h1>You don't have any orders</h1>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        <% } %>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    </body>
+</html>

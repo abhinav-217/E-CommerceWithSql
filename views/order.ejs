@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta
+        name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+        <title>E-Commerce-CQ</title>
+    </head>
+    <style>
+        body {
+            background-image: linear-gradient(90deg,#000154,#9596d8);
+        }
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        .my-font {
+            color: white;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
+        #success {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #fefefe;
+            color: #000000;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+        }
+
+        #success.show {
+            visibility: visible;
+            -webkit-animation: fadeinS 0.5s, fadeout 0.5s 2.5s;
+            animation: fadeinS 0.5s, fadeout 0.5s 2.5s;
+        }
+        @-webkit-keyframes fadeinS {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeinS {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            /* width: 10%; 
+            height: 10%;  */
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            -webkit-animation-name: fadeIn;
+            -webkit-animation-duration: 0.4s;
+            animation-name: fadeIn;
+            animation-duration: 0.4s;
+        }
+        .modal-content {
+            position: fixed;
+            bottom: 0;
+            background-color: #000154;
+            width: 50%;
+            -webkit-animation-name: slideIn;
+            -webkit-animation-duration: 0.4s;
+            animation-name: slideIn;
+            animation-duration: 0.4s;
+            border: 3px solid red;
+            border-radius: 10px 50px 10px;
+        }
+        .close {
+            color: rgb(255, 255, 255);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: rgb(255, 255, 255);
+        }
+
+        .modal-body {
+            padding: 2px 16px;
+        }
+
+        .modal-footer {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: rgb(0, 0, 0);
+        }
+        .order{
+            color: white;
+        }
+        .my-list {
+            background-color: #000154;
+            color: white;
+            font-family: initial;
+        }
+        .my-modal {
+            justify-content: space-evenly;
+        }
+        .my-modal button {
+            margin-bottom: 2vh;
+        }
+        .font {
+            font-size: 17px;
+            padding: 2px 2px 2px 16px;
+            font-family: monospace;
+        }
+        h3 {
+            padding-left: 17px;
+        }
+        .my-none{
+            display:none;
+        }
+        /* .myOnSmall{
+                width: 100%;
+        } */
+        @-webkit-keyframes slideIn {
+            from {
+                bottom: -300px;
+                opacity: 0
+            }
+            to {
+                bottom: 50;
+                opacity: 1
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                bottom: -300px;
+                opacity: 0
+            }
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        @-webkit-keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+            to {
+                opacity: 1
+            }
+        }
+        @media only screen and(max-width: 600px) {
+            body {
+                background-image: linear-gradient(90deg,#000154,#9596d8);
+            }
+            .w-50 {
+                width: 80% !important;
+            }
+            .changeDir {
+                flex-direction: column;
+            }
+            .modal {
+                width: 100%;
+                height: 100%;
+            }
+            .modal-content {
+                width: 100%;
+            }
+            .myOnSmall {
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+    <body>
+        <%if( err.mess==1){%>
+            <div class="container-sm d-flex justify-content-center order m-5">
+                <h1>You Dont have any cart Items</h1>
+            </div>
+            <div class="container-sm d-flex justify-content-center m-5">
+                <a href="/cart/checkout"><button class="btn btn btn-primary">Previous</button></a>
+            </div>
+        <% }else{ %>
+            <div class="container-sm d-flex justify-content-center order m-5">
+                <div class="container">
+                    <h1>You did not entered the address <br> Enter your Address to continue!!!!!
+                    </h1>
+                </div>
+            </div>
+            <div class="container-sm d-flex justify-content-center m-5">
+                <a href="/cart/checkout"><button class="btn btn btn-primary">Previous</button></a>
+            </div>
+        <% } %>
+        <div class="container-fluid my-5" id="originalCart">
+            <div class="container-sm d-flex justify-content-center" id="main"><h1 class="my-none order" id="h1">Ordered Products <br> Thank you for Choosing Pur-Chase.com 😊</h1></div>
+            <div class="row mx-5" id="confirm">
+
+            </div>
+        </div>
+        <div class="container d-flex justify-content-center"><a href="/cart"><button class="btn btn-primary my-none order" id="btn">Go to Cart page</button></a></div>
+        <div id="payment">
+            <% if(products.length>0){ %>
+                <div class="container-fluid my-5" id="originalCart">
+                    <div class="row mx-5" id="originalCart">
+                        <% products.forEach((p)=>{  %>
+                            <div class="mx-2 my-2">
+                                <div class="card border border-warning" style="width: 15rem;">
+                                    <img src="<%= p.image %>" class="card-img-top" alt="<%= p.image %>" height="200" style="padding: 5vh;">
+                                    <% if(p.inStock){ %>
+                                        <div class="card-body">
+                                            <h5 class="card-title"><%= p.name %></h5>
+                                            <h5 class="card-title">$
+                                                <%= p.price %></h5>
+                                            <span>Quantity:-</span>
+                                            <span id="quantity">
+                                                <%= p.quant %></span>
+                                        </div>
+                                    <% }else{%>
+                                        <h3>Out of stock</h3>;
+                                        <p class="font">This product will not be ordered</p>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+                <div class="container d-flex justify-content-around changeDir">
+                    <p class="my-font font" style="font-size:25px;">Order Total:- $<%= totalPrice %></p>
+                    <div class="container">
+                        <a href="/order/orderCOD">
+                            <button class="btn btn-md btn-info myOnSmall">Pay Cash On Delievery</button>
+                        </a>
+                        <button class="btn btn-md btn-danger" id="rzp-button1">Pay Online( RazorPay )</button>
+                    </a>
+                </div>
+                <% }else{ %>
+            <% } %>
+        </div>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+        <script>
+            let payment = document.getElementById('payment');
+            let Oconfirm = document.getElementById('confirm');
+            let main = document.getElementById('main');
+            let btn = document.getElementById('btn');
+            let h1 = document.getElementById('h1');
+            document.getElementById('rzp-button1').onclick = async function (e) {
+                e.preventDefault();
+                let response = await  fetch('/order/getAmount',{
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        // amount:500,
+                    })
+                })
+                let orderData = await response.json();
+                var options = {
+                "key": "rzp_test_wdCQSGYRNzgH6s",
+                "amount": orderData.price * 100.00, 
+                "currency": "INR",
+                "order_id": orderData.id,
+                "handler": function (response) {
+                    alert(response.razorpay_payment_id);
+                    let value = {success:1};
+                    var request = new XMLHttpRequest();
+                    request.open("post", "/order/getConfirmation");
+                    request.setRequestHeader("Content-type", "application/json");
+                    request.send(JSON.stringify(value));
+                    request.addEventListener('load', () => {
+                        console.log(JSON.parse(request.responseText));
+                        payment.innerHTML = "";
+                        setProducts(JSON.parse(request.responseText));
+                    })
+                    // var settings = {
+                    // "url": "/api/payment/verify",
+                    // "method": "POST",
+                    // "timeout": 0,
+                    // "headers": {
+                    //     "Content-Type": "application/json"
+                    // },
+                    // "data": JSON.stringify({response}),
+                    // }
+                    // window.location = "/cart";
+                    // $.ajax(settings).done(function (response) {
+                    //     orderId=response.orderId;
+                    //     console.log(orderId);
+                    // }); 
+                },
+                "theme": {
+                    "color": "#2299cc"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.on('payment.failed', function (response) {
+                alert(response.error.code);
+                // alert(response.error.description);
+                // alert(response.error.source);
+                // alert(response.error.step);
+                // alert(response.error.reason);
+                // alert(response.error.metadata.order_id);
+                // alert(response.error.metadata.payment_id);
+                    let value = {success:0};
+                    var request = new XMLHttpRequest();
+                    request.open("post", "/order/getConfirmation");
+                    request.setRequestHeader("Content-type", "application/json");
+                    request.send(JSON.stringify(value));
+                    request.addEventListener('load', () => {
+                        console.log(JSON.parse(request.responseText));
+                        setProducts(JSON.parse(request.responseText));
+                    })
+            });
+                rzp1.open();
+            }
+            function setProducts(products) {
+                if(products.length > 0) {
+                    let div = document.createElement('div');
+                    products.forEach((p) => {
+                        if(p.inStock)
+                        {
+                            div.innerHTML = `
+                            <div class="mx-2 my-2">
+                            <div class="card border border-warning" style="width: 15rem;">
+                                <img src="${p.image}" class="card-img-top" alt="${p.image}" height="200" style="padding: 5vh;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${p.name}</h5>
+                                        <h5 class="card-title">$
+                                            ${p.price}</h5>
+                                        <span>Quantity:-</span>
+                                        <span id="quantity">
+                                            ${p.quant}</span>
+                                    </div>
+                            </div>
+                        </div>
+                            `
+                        }
+                        else
+                        {
+                            div.innerHTML = `
+                            <div class="mx-2 my-2">
+                            <div class="card border border-warning" style="width: 15rem;">
+                                <img src="${p.image}" class="card-img-top" alt=${p.image}" height="200" style="padding: 5vh;">
+                                <p class="font">This product is not ordered</p>
+                            </div>
+                        </div>
+                            `
+                        }
+                    })
+                    Oconfirm.appendChild(div);
+                    main.style.display = "block";
+                    btn.style.display = "block";
+                    h1.style.display = "block";
+                }
+                else
+                {
+                    btn.style.display = "block";
+                    h1.style.display = "block";
+                    h1.innerText = "Your order could not be processed"
+                }
+            }
+                </script>
+            </body>
+        </body>
+    </body>
+</html>

@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta
+        name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+        <title>E-Commerce-CQ</title>
+    </head>
+    <style>
+        body {
+            background-image: linear-gradient(90deg,#000154,#9596d8);
+        }
+        .user-cart {
+            color: white;
+            font-family: initial;
+        }
+        .cur_pon:hover {
+            cursor: pointer;
+        }
+        .mysearch {
+            width: 20vw;
+            margin-top: 1vh;
+        }
+        .crud_btn {
+            height: 4vh;
+            width: 4vw;
+        }
+        @media only screen and (max-width: 600px) {
+            body {
+                /* background-size: cover; */
+                background-image: linear-gradient(90deg,#000154,#9596d8);
+            }
+            .mysearch {
+                width: 65vw;
+            }
+            .ml-5,
+            .mx-5 {
+                margin-left: 17px !important;
+            }
+            .mysearch {
+                width: 72vw;
+            }
+            .crud_btn {
+                height: 6vh;
+                width: 6vw;
+            }
+            .my-mt {
+                margin-top: 2vh;
+            }
+        }
+    </style>
+    <body style="background-color: aliceblue;">
+        <%if(name.length>2){ %>
+            <% name = JSON.parse(name) %>
+            <%- include('head',{name:name,item:products.length})  %>
+        <%}else{%>
+            <%- include('header',{name:JSON.parse(name)})  %>
+        <% } %>
+        <div class="container d-flex justify-content-end">
+            <input class="form-control mr-sm-2 mysearch" name="search" type="search" placeholder="Search" aria-label="Search" id="search">
+            <button class="btn btn-outline-success my-2 my-sm-0" onclick="searchBtn(this)">Search</button>
+        </div>
+        <div class="container">
+            <h3 class="text-justify user-cart">Your Cart</h3>
+            <div class="container d-flex justify-content-between">
+                <a href="/">
+                    <button class="btn btn-warning my-3">Go to Home</button>
+                </a>
+                <% if(products.length>0){ %>
+                    <a href="/cart/checkOut">
+                        <button class="btn btn-info my-3">CheckOut</button>
+                    </a>
+                <% } %>
+            </div>
+        </div>
+        <% if(products.length>0){ %>
+            <div class="container-fluid mb-5" id="originalCart">
+                <div class="row mx-5" id="originalCart">
+                    <% products.forEach((p)=>{  %>
+                        <div class="mx-2 my-mt">
+                            <div class="card border border-warning" style="width: 15rem;">
+                                <a href="/cart/openProduct/<%= p.prod_id %>"><img src="<%= p.image %>" class="card-img-top" alt="<%= p.image %>" height="200" style="padding: 5vh;"></a>
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= p.name %></h5>
+                                    <h5 class="card-title">$
+                                        <%= p.price %></h5>
+                                    <span>Quantity:-</span>
+                                    <span id="quantity">
+                                        <%= p.quantity %></span>
+                                    <br>
+                                    <br>
+                                    <input type="hidden" value="<%= p.prod_id %>" style="width: 4rem;">
+                                    <ion-icon class="cur_pon crud_btn" name="add-circle-outline" onclick="cartOperation(this, '<%= p.prod_quant %>', '<%= p.quantity %>')"></ion-icon>
+                                    <ion-icon class="cur_pon crud_btn" name="remove-circle-outline" onclick="cartOperation(this, '<%= p.prod_quant %>', '<%= p.quantity %>')"></ion-icon>
+                                    <ion-icon class="cur_pon crud_btn" name="trash-outline" onclick="cartOperation(this, '<%= p.prod_quant %>', '<%= p.quantity %>')"></ion-icon>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        <% }else{ %>
+            <div class="container mx-5">
+                <div class="spinner-border text-warning" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
+                <p style="color: white;">No Product Found !!!
+                </p>
+            </div>
+        <% } %>
+        <div class="container-fluid">
+            <div class="row mx-5" id="searchAdd"></div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+        <script>
+            let search = document.getElementById('search');
+            let originalCart = document.getElementById('originalCart');
+            let searchAdd = document.getElementById('searchAdd');
+            search.addEventListener('keyup', (e) => { // console.log(search.value.length)
+                if (search.value.length == 0) {
+                    originalCart.style.display = "block";
+                    searchAdd.innerHTML = ""
+                }
+            })
+            function searchBtn(e) { // console.log(search.value)
+                let searchVal = search.value;
+                let request = new XMLHttpRequest();
+                request.open("post", "/cart/searchCart");
+                request.setRequestHeader("Content-type", "application/json");
+                request.send(JSON.stringify({value: searchVal}));
+                request.addEventListener('load', () => {
+                    originalCart.style.display = "none";
+                    showProducts(JSON.parse(request.responseText));
+                })
+            }
+            function showProducts(products) {
+                console.log(products.length)
+                if (products.length == 0) {
+                    let mydiv = document.createElement('div');
+                    mydiv.innerHTML = `            <div class="container">
+                <div class="spinner-border text-warning" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
+                <p>Seem's Like you have nothing in your cart
+                </p>
+                <p>Add something to start shopping!!!!</p>
+                <p>
+                    <a href="/">Add Some Products</a>
+                </p>
+            </div>`
+                    searchAdd.innerHTML = ""
+                    searchAdd.appendChild(mydiv)
+                } else {
+
+                    products.forEach((p) => {
+                        let mydiv = document.createElement('div');
+                        mydiv.innerHTML = `
+      <div class="mt-3 mx-2">
+        <div class="card border border-warning" style="width: 15rem;">
+            <div class="container d-flex justify-content-start mt-2"></div>
+                <a href="/openProduct/${
+                            p.prod_id
+                        }"><img src="${
+                            p.image
+                        }" class="card-img-top" alt="${
+                            p.image
+                        }" height="200" style = "padding: 5vh;"></a>
+                <div class="card-body">
+                  <h5 class="card-title mt-5">${
+                            p.name
+                        }</h5>
+                  <h5 class="card-title">$ ${
+                            p.price
+                        }</h5>
+                  <span>Quantity:-</span><span id="quantity"> ${
+                            p.quantity
+                        }</span>
+                  <br>
+                  <br>
+                  <input type="hidden" value="${
+                            p.prod_id
+                        }" style="width: 4rem;">
+                  <ion-icon class="cur_pon" name="add-circle-outline" "cartOperation(this, '${
+                            p.prod_quant
+                        }')"  style="height: 3vh; width: 3vw;"></ion-icon>
+                  <ion-icon class="cur_pon" name="remove-circle-outline" "cartOperation(this, '${
+                            p.prod_quant
+                        }')"  style="height: 3vh; width: 3vw;"></ion-icon>
+                  <ion-icon class="cur_pon" name="trash-outline" "cartOperation(this, '${
+                            p.prod_quant
+                        }')" style="height: 3vh; width: 3vw;"></ion-icon>
+                </div>
+              </div>
+            </div>
+      `
+                        searchAdd.appendChild(mydiv)
+                    })
+                }
+            }
+
+            function cartOperation(e, prod_quant, curr_quant) { // console.log(e);
+                console.log(curr_quant)
+                let check = e.name;
+                let update = {
+                    check: null,
+                    pId: null,
+                    isOne: null,
+                    quantity: null
+                }
+                let flag = true;
+                if (check == "add-circle-outline") {
+                    let currentQuantity = e.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerText;
+                    let quantity = e.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling;
+                    let pId = e.previousElementSibling.value;
+                    // console.log(pId);
+                    let chk = parseInt(currentQuantity) + 1
+                    if (chk > parseInt(prod_quant)) { // console.log("Exceeded Quantity");
+                        flag = false;
+                    } else {
+                        quantity.innerText = "";
+                        quantity.innerText = parseInt(currentQuantity) + 1;
+                        update.quantity = parseInt(quantity.innerText);
+                        update.check = 2;
+                        update.pId = pId;
+                    }
+
+                } else if (check == "remove-circle-outline") {
+                    let currentQuantity = e.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerText
+                    let quantity = e.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling;
+                    let pId = e.previousElementSibling.previousElementSibling.value;
+                    // console.log(pId);
+                    if (parseInt(currentQuantity) != 1) {
+                        quantity.innerText = "";
+                        quantity.innerText = parseInt(currentQuantity) - 1;
+                    } else {
+                        update.isOne = true;
+                    } update.check = 3;
+                    update.pId = pId;
+                } else if (check == "trash-outline") {
+                    let pId = e.previousElementSibling.previousElementSibling.previousElementSibling.value;
+                    // console.log(pId);
+                    e.parentElement.parentElement.style.display = "none";
+                    update.check = 4;
+                    update.pId = pId;
+                }
+                if (flag) { // console.log(update);
+                    makeRequest(update);
+                } else {
+                    alert("Kitna Khareedoge itna toh h hi nhi 🙄😒 ")
+                }
+
+            }
+            function makeRequest(update) {
+                var request = new XMLHttpRequest();
+                request.open("post", "/cart/updateQuantity");
+                request.setRequestHeader("Content-type", "application/json");
+                request.send(JSON.stringify(update));
+                request.addEventListener('load', () => { // console.log(request.responseText);
+                })
+            }
+        </script>
+    </body>
+</html>

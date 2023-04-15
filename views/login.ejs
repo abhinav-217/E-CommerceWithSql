@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta
+        name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+        <link rel="stylesheet" href="../public/style.css">
+        <title>E-Commerce-CQ</title>
+    </head>
+    <style>
+        body {
+            background-image: url("https://images.unsplash.com/32/Mc8kW4x9Q3aRR3RkP5Im_IMG_4417.jpg?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
+            background-color: #cccccc;
+            background-repeat: no-repeat;
+            /* background-size: cover; */
+            background-size: cover;
+            color: white;
+        }
+        a{
+            color: white;
+        }
+        a:hover{
+            color: rgb(246, 163, 163);
+        }
+        @media only screen and (max-width: 600px) {
+            body {
+                background-size: 270%;
+            }
+            .w-50 {
+                width: 90% !important;
+                padding: 5vw;
+            }
+            .mt-1, .my-1 {
+              margin-top: 1.25rem!important;
+            }
+            .btn-primary {
+              color: #fff;
+              background-color: #007bff;
+              border-color: #007bff;
+              margin-top: 1.25rem;
+            }
+        }
+    </style>
+    <!-- <body style="background-color: aliceblue;"> -->
+    <body>
+        <%- include('header',{name:""})  %>
+
+        <div class="container w-50 mt-5 onResponse">
+            <div class="container bg-danger text-center text-light">
+                <% if(err) {%>
+                    <%= err %>
+                <% } %>
+            </div>
+            <h3>Login</h3>
+            <form method="POST" action="/auth/login">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" id="exampleInputPassword1" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <a href="/auth/forgot">
+                <p class="text-justify mt-1">Forgot Password</p>
+            </a>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    </body>
+</html>

@@ -1,0 +1,94 @@
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/" style="color: red;;">
+            <b>Pur-Chase</b>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/product">Products</a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <!-- <a href="/reset">Reset Password</a> -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <%= name.name %>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="text-light" href="/userAccount">
+                        <div class="bg-warning mt-2 mb-2 text-light p-2">
+                            My Account
+                        </div>
+                    </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="text-light" href="/auth/reset">
+                        <div class="bg-warning mt-2 mb-2 text-light p-2">
+                            Reset Password
+                        </div>
+                    </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="text-light" href="/order/userOrders">
+                        <div class="bg-warning mt-2 mb-2 text-light p-2">
+                            My-Orders
+                        </div>
+                    </a>
+                    <% if(name.isAdmin){ %>
+                        <div class="dropdown-divider"></div>
+                            <a class="text-light" href="/admin">
+                            <div class="bg-warning mt-2 mb-2 text-light p-2">
+                                Admin
+                            </div>
+                        </a>
+                    <% } %>
+                    <% if(name.isSeller){ %>
+                        <div class="dropdown-divider"></div>
+                            <a class="text-light" href="/seller">
+                            <div class="bg-warning mt-2 mb-2 text-light p-2">
+                                Seller Account
+                            </div>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                            <a class="text-light" href="/seller/sellerOrder">
+                            <div class="bg-warning mt-2 mb-2 text-light p-2">
+                                My Selling/Orders
+                            </div>
+                        </a>
+                    <% } %>
+                    <div class="dropdown-divider"></div>
+                    <a class="text-light" href="/auth/logout">
+                    <div class="bg-warning mt-2 mb-2 text-light p-2">
+                        Logout
+                    </div>
+                </a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="/cart">
+                    <button type="button" class="btn btn-sm btn-primary position-relative rounded-circle">
+                        Cart
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            <% if(item>0){ %>
+                                <%= item %>
+                            <% }else{ %>
+                                <%= "+" %>
+                            <% } %>
+                        </span>
+                    </button>
+                </a>
+            </li>
+        </ul>
+
+    </div>
+</nav></div>

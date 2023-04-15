@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta
+        name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+        <title>E-Commerce-CQ</title>
+    </head>
+    <style>
+        body  {
+            background-image: linear-gradient(90deg,#000154,#9596d8);
+        }
+        body::-webkit-scrollbar{
+             display: none;
+        }
+        .my-font{
+            color: white;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
+        #success {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #fefefe;
+            color: #000000;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+        }
+
+        #success.show {
+            visibility: visible;
+            -webkit-animation: fadeinS 0.5s, fadeout 0.5s 2.5s;
+            animation: fadeinS 0.5s, fadeout 0.5s 2.5s;
+        }
+        @-webkit-keyframes fadeinS {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeinS {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            /* width: 10%; 
+            height: 10%;  */
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+            -webkit-animation-name: fadeIn; 
+            -webkit-animation-duration: 0.4s;
+            animation-name: fadeIn;
+            animation-duration: 0.4s;
+        }
+        .modal-content {
+            position: fixed;
+            bottom: 0;
+            background-color: #000154;
+            width: 50%;
+            -webkit-animation-name: slideIn;
+            -webkit-animation-duration: 0.4s;
+            animation-name: slideIn;
+            animation-duration: 0.4s;
+            border: 3px solid red;
+            border-radius: 10px 50px 10px;
+        }
+        .close {
+            color: rgb(255, 255, 255);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: rgb(255, 255, 255);
+        }
+
+        .modal-body {padding: 2px 16px;}
+
+        .modal-footer {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: rgb(0, 0, 0);
+        }
+        .my-list{
+            background-color:#000154;
+            color: white;
+            font-family: initial;
+        }
+        .my-modal{
+                justify-content: space-evenly;
+            }
+            .my-modal button{
+                margin-bottom: 2vh;
+            }
+        @-webkit-keyframes slideIn {
+            from {bottom: -300px; opacity: 0} 
+            to {bottom: 50; opacity: 1}
+        }
+
+        @keyframes slideIn {
+            from {bottom: -300px; opacity: 0}
+            to {bottom: 0; opacity: 1}
+        }
+
+        @-webkit-keyframes fadeIn {
+            from {opacity: 0} 
+            to {opacity: 1}
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0} 
+            to {opacity: 1}
+        }
+        @media only screen and (max-width: 600px) {
+            body {
+                background-image: linear-gradient(90deg,#000154,#9596d8);
+            }
+            .w-50{
+                width: 80%!important;
+            }
+            .changeDir{
+                flex-direction: column;
+            }
+            .modal{
+                width: 100%;
+                height: 100%;
+            }
+            .modal-content{
+                width: 100%;
+            }
+        }
+    </style>
+    <body>
+        <% let totalPrice = 0; %>
+        <% if(products.length) {%>
+            <% products.forEach((p)=>{%>
+            <% totalPrice = ((totalPrice + p.price)*p.quant).toFixed(2) %>
+            <% totalPrice = parseFloat(totalPrice)%>
+            <%}) %>
+            <% } %>
+        <%if(name.length>2){ %>
+            <% name = JSON.parse(name) %>
+            <%- include('head',{name:name,item:products.length})  %>
+        <%}else{%>
+            <%- include('header',{name:JSON.parse(name)})  %>
+        <% } %>
+        <div id="myModal" class="modal">
+            <!-- Modal -->
+            <div class="modal-content">
+              <span class="close">&times;</span>
+                <div class="my-list">
+                    <ul class="list-group">
+                        <li class="list-group-item my-list">The quantity you needed for these products are not available.</li>
+                        <% let size = 1 %>
+                        <% err.forEach((e)=>{ %>
+                            <li class="list-group-item my-list"><%= size %> <%= e.name %> <br> Available:- <%= e.quantity %> <br> In your cart <%= e.quant %></li>
+                            <% size = size + 1 %>
+                        <% }) %>
+                </div>
+                <p class="px-3 my-font">If you still order the rest of the items of your cart these products will not be ordered</p>
+                <p class="px-3 my-font">So either Decrease the quantity <br> Or Leave it !!! <br> It will not be ordered.</p> 
+                <div class="d-flex my-modal">
+
+                    <p class="px-3 my-font">Still Want to order ?</p>
+                    <a href="/order/placeOrder"><button class="btn btn-sm btn-danger">Proceed</button></a>
+                </div>
+              </ul>
+            </div>
+          
+        </div>
+        <div class="container">
+            <h3 class="text-justify my-font mt-2">CheckOut
+            <div class="container d-flex justify-content-between changeDir">
+                <a href="/cart">
+                    <button class="btn btn-warning my-3 myBtn">Go to Cart</button>
+                </a>
+                <% if(products.length>0 && err.length<=0){ %>
+                <span class="total my-font">
+                    <h3>Total</h3><h4>$<%= totalPrice %></h4>
+                </span>
+                <a href="/order/placeOrder">
+                    <button class="btn btn-info my-3 myBtn my-font">Proceed</button>
+                </a>
+                <% }else{%>
+                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                     <p style="font-size:15px;"><i>Product Quantity out of range</i><a href="#" onclick="showTC(this)"> View more</a></p>
+                   </div>
+                <% } %>
+            </div>
+        </div>
+        <% if(products.length>0){ %>
+            <div class="container-fluid mb-5" id="originalCart">
+                <div class="row mx-5" id="originalCart">
+                    <% products.forEach((p)=>{  %>
+                        <% totalPrice = (totalPrice + p.price)*p.quant %>
+                        <div class="mx-2">
+                            <div class="card border border-warning" style="width: 15rem;">
+                                <a href="/openProduct/<%= p.pId %>"><img src="<%= p.image %>" class="card-img-top" alt="<%= p.image %>" height="200" style="padding: 5vh;"></a>
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= p.name %></h5>
+                                    <h5 class="card-title">$
+                                        <%= p.price %>
+                                    </h5>
+                                    <span>Quantity:-</span>
+                                    <span id="quantity">
+                                        <%= p.quant %></span>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+            <div id="success">Yeaahhh All set for you Place order <br> Hurryyyyyy !!!! </div>
+            <div class="container-fluid my-font w-50">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">House No.</label>
+                        <input type="text" name="name" class="form-control" value = "<%= add[0].street1 %>" id="house" aria-describedby="emailHelp" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Landmark Near By</label>
+                        <input type="text" name="name" class="form-control" value = "<%= add[0].street2 %>" id="landmark" aria-describedby="emailHelp" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">City</label>
+                        <input type="text" name="name" class="form-control" value = "<%= add[0].city %>" id="city" aria-describedby="emailHelp" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">State</label>
+                        <input type="text" name="name" class="form-control" value = "<%= add[0].state %>" id="state" aria-describedby="emailHelp" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Pincode</label>
+                        <input type="text" name="name" class="form-control" value = "<%= add[0].pincode %>" id="pincode" aria-describedby="emailHelp" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Phone Number</label>
+                        <input type="number" name="name" class="form-control" value = "<%= add[0].phone %>" id="phone" aria-describedby="emailHelp" required>
+                    </div>
+                    
+                    <button class="btn btn-primary mb-4" onclick="Addaddress(this)">Add Address</button> 
+            </div>
+        <% }else{ %>
+            <div class="container mx-5">
+                <div class="spinner-border text-warning" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
+                <p class="my-font">No Product Found !!!
+                </p>
+            </div>
+        <% } %>
+
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+        <script>
+
+            function Addaddress(e)
+            {
+                let house = document.getElementById('house').value;
+                let landmark = document.getElementById('landmark').value;
+                let phone = document.getElementById('phone').value;
+                let city = document.getElementById('city').value;
+                let state = document.getElementById('state').value;
+                let pincode = document.getElementById('pincode').value;
+                let address = {
+                    phone:phone,
+                    city:city,
+                    state:state,
+                    pincode:pincode,
+                    street1:house,
+                    street2:landmark
+                }
+                if ((house.replace(/\s/g, '').length <= 0 && house != '') || (house === "")){
+                    alert("The fields cannot be empty")
+                }
+                else if((landmark.replace(/\s/g, '').length <= 0 && landmark != '') || (landmark === "") )
+                {
+                    alert("The fields cannot be empty")
+                }
+                else if((phone.replace(/\s/g, '').length <= 0 && phone != '') || (phone === ""))
+                {
+                    alert("The fields cannot be empty")
+                }
+                else if((city.replace(/\s/g, '').length <= 0 && city != '') || (city === ""))
+                {
+                    alert("The fields cannot be empty")
+                }
+                else if((state.replace(/\s/g, '').length <= 0 && state != '') || (state === ""))
+                {
+                    alert("The fields cannot be empty")
+                }
+                else if((pincode.replace(/\s/g, '').length <= 0 && pincode != '') || (pincode === ""))
+                {
+                    alert("The fields cannot be empty")
+                }
+                else if((phone.replace(/\s/g, '').length <= 0 && phone != '') || (phone === ""))
+                {
+                    alert("The fields cannot be empty")
+                }
+                else
+                {
+                    makeRequest(address)
+                }
+            }
+            function makeRequest(address)
+            {
+                var request = new XMLHttpRequest();
+                request.open("post", "/order/placeOrder");
+                request.setRequestHeader("Content-type", "application/json");
+                request.send(JSON.stringify(address));
+                request.addEventListener('load', () => {
+                    console.log(request.responseText.status);
+                    let value = JSON.parse(request.responseText);
+                    console.log(value.status);
+                    if(value.status==1)
+                    {
+                        showSuccess();
+                    }
+                })
+            }
+            function showSuccess(){
+                var x = document.getElementById("success");
+                    x.className = "show";
+                    setTimeout(function () {
+                        x.className = x.className.replace("show", "");
+                }, 3000);
+            }
+            // modal scripts start here  
+            var modal = document.getElementById("myModal");
+            var span = document.getElementsByClassName("close")[0];
+            function showTC(e)
+            {
+                console.log(e)
+                modal.style.display = "block";
+            }
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        </script>
+    </body>
+</html>

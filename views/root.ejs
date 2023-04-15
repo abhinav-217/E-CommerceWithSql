@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta
+        name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+        <title>E-Commerce-CQ</title>
+    </head>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-image: linear-gradient(90deg,#000154,#9596d8);
+            overflow-x: hidden;
+        }
+        body::-webkit-scrollbar{
+            display: none;
+        }
+        .main{
+            margin-left: 1vw;
+        }
+        .img-small {
+            width: 40%;
+            height: 20%;
+            align-self: center;
+            margin-top: 4vh;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Modal Content */
+        .modal-content {
+            position: relative;
+            background-color: #000154;
+            color: white;
+            margin: auto;
+            padding: 0;
+            border: 3px solid #ebf4b3;
+            border-radius: 10px 50px 10px;
+            width: 50%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+
+            to {
+                top: 0;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+
+            to {
+                top: 0;
+                opacity: 1
+            }
+        }
+
+        /* The Close Button */
+        .close {
+            color: red;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .modal-body {
+            padding: 2px 16px;
+        }
+        .my-opac{
+          opacity: 0.5;
+        }
+        .my-hover:hover {
+            box-shadow: 5px 5px #da2163, -5px 0.4px #949ee9;
+            cursor: pointer;
+        }
+        .hovBtn:hover {
+            background-color: rgb(0, 0, 0)
+        }
+        @media only screen and (max-width: 640px) {
+            body{
+                background-image: linear-gradient(90deg,#000154,#9596d8);
+            }
+          .img-small {
+                width: 59%;
+                height: 20%;
+                align-self: center;
+                margin-top: 4vh;
+            }
+            .modal-content {
+                width: 80%;
+                font-size: 0.7rem;
+                font-family: sans-serif;
+            }
+            .main{
+              margin-left: 4vw;
+            }
+        }
+    </style>
+
+    <body style="background-color: rgb(0, 97, 114);">
+        <%if(name.length>2){ %>
+            <% name=JSON.parse(name) %>
+            <%- include('head',{name:name,item:0}) %>
+        <%}else{%>
+            <%- include('header',{name:JSON.parse(name)}) %>
+        <% } %>
+        <!-- Modal starts here  -->
+        <div id="myModal" class="modal">
+            <!-- <div class="modal-content">
+                              <div class="modal-body">
+                                <p>Some text in the Modal Body</p>
+                                <p>Some other text...</p>
+                              </div>
+                            </div> -->
+        </div>
+        <!-- Modal ends here  -->
+        <% size=parseInt(size) %>
+        <div class="container d-flex justify-content-start"></div>
+        <div>
+            <div class="container-fluid" id="toadd1">
+                <div class="row main" id="to">
+                    <% for(let i=0;i<size;i++){ %>
+                        <div>
+                            <div class="card mx-2 my-1 my-hover" style="background-color: #0000008f; width: 18rem; color: white;">
+                                <input type="hidden" value="<%= products[i].prod_id%>">
+                                <img class="card-img-top mb-2" src=<%=products[i].image %> alt="Card image cap" height="200" style="padding:3vh;">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        Product:-
+                                        <%= products[i].name %>
+                                    </h5>
+                                    <input type="hidden" value="<%= products[i].description%>">
+                                    <p class="card-text">
+                                        Price:- $
+                                        <%= products[i].price %>
+                                    </p>
+                                    <a>
+                                        <button class="btn btn-sm btn-primary detailBtn hovBtn" onclick="showModal(this)">View
+                                                                              Details</button>
+                                    </a>
+                                    <a href="/cart/addtocart/<%=products[i].prod_id%>">
+                                        <button class="btn btn-danger btn-sm hovBtn">Cart+</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="container-fluid">
+                <div class="row main" id="toadd"></div>
+            </div>
+        </div>
+        <div class="container-fluid my-5 ml-3">
+            <button id="showMore" onclick="nextProducts(this)" class="btn btn-sm btn-success hovBtn">Show More</button>
+
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+        <!-- Script starts here  -->
+        <script>
+            // console.log("Hello meeting")
+            // console.log(document.getElementById('toadd1').childElementCount)
+            // Modal script starts
+            let modal = document.getElementById("myModal");
+            let btn = document.getElementsByClassName("detailBtn");
+            let to = document.getElementById("to")
+            let toadd = document.getElementById("toadd");
+            let toadd1 = document.getElementById("toadd1");
+            let main = document.getElementById("main");
+            let showMore = document.getElementById("showMore")
+            // console.log(toadd.childElementCount)
+            function showModal(e) {
+                let rate = e.parentElement.previousElementSibling.textContent;
+                let detail = e.parentElement.previousElementSibling.previousElementSibling.value;
+                let title = e.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.textContent;
+                let imgSrc = e.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.parentElement.previousElementSibling.src;
+                let productId = e.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.parentElement.previousElementSibling.previousElementSibling.value;
+                let mydiv = document.createElement('div');
+                modal.innerHTML = "";
+                mydiv.innerHTML = `
+                  <div class="modal-content">
+                    <span class="close" onclick="closeModal(this)">&times;</span>
+                    <input type="hidden" value="${productId}">
+                    <img class="card-img-top mb-2 img-small" src="${imgSrc}" alt="Card image cap" width = "50" >
+                    <div class="modal-body text-center p-2">
+                    <p>${title}</p>
+                    <p>${detail}</p>
+                    <p>${rate}</p>
+                    <a href="/cart/addtocart/${productId}"><button class="btn btn-danger btn-sm modalBtn">Cart+</button></a>
+                    </div>
+                  </div>
+               `
+                modal.appendChild(mydiv)
+                modal.style.display = "block";
+            }
+            let span = document.getElementsByClassName("close")[0];
+            function closeModal(e) {
+                console.log(e);
+                modal.style.display = "none";
+            }
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+            let moreProducts = 1;
+            function nextProducts(e) {
+                let value = {
+                    quantity: moreProducts
+                }
+                var request = new XMLHttpRequest();
+                request.open("post", "/getproducts");
+                request.setRequestHeader("Content-type", "application/json");
+                request.send(JSON.stringify(value));
+                moreProducts++;
+                request.addEventListener('load', () => {
+                    
+                    setProducts(JSON.parse(request.responseText));
+                })
+            }
+            function setProducts(products) {
+                if (products.length) {
+                    products.forEach((e) => {
+                        let div1 = document.createElement('div');
+                        div1.innerHTML = `
+                          <div>
+                            <div class="card mx-2 my-1 my-hover" style="background-color: #0000008f; width: 18rem; color: white;">
+                              <input type="hidden" value="${
+                            e.prod_id
+                        }">
+                              <img class="card-img-top mb-2" src="${
+                            e.image
+                        }" alt="Card image cap" height="200"
+                              style = "padding:3vh;">
+                              <div class="card-body">
+                                <h5 class="card-title">
+                                ${
+                            e.name
+                        }
+                                </h5>
+                                <input type="hidden" value="${
+                            e.description
+                        }">
+                                <p class="card-text">
+                                  $ ${
+                            e.price
+                        }
+                                </p>
+                                <a><button class="btn btn-sm btn-primary detailBtn hovBtn" onclick="showModal(this)">View
+                                    Details</button></a>
+                                <a href="/cart/addtocart/${
+                            e.prod_id
+                        }"><button
+                                    class="btn btn-danger btn-sm hovBtn">Cart+</button>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                          `
+                        to.appendChild(div1);
+                    })
+                    
+                }
+                else
+                {
+                    showMore.style.display = "none"
+                }
+            }
+        </script>
+    </body>
+
+</html>
