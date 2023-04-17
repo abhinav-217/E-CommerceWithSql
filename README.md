@@ -51,7 +51,7 @@ User will pay their total amount from here and then!!
 Everything is done 
 
 Wait Wait Wait!!!! 👀👀 
-But what if a user A adds 10 quantity of some products in his cart but then after some other user B ordered some quantity of that same product and eventuallly the products quantity becomes less than the product quantity of user A which he or she had in their cart then what 🤔🤔🤔
+But what if a user A adds 10 quantity of some products in his cart but then after some time other user B ordered some units of that same product and eventuallly the products quantity in the database becomes less than the no.of products unit of user A which he or she had in their cart then what 🤔🤔🤔
 
 Then this will happen
 <img width="960" alt="image" src="https://user-images.githubusercontent.com/85096129/232477514-f3a77364-0e35-455e-b553-d5f9240a56d6.png">
