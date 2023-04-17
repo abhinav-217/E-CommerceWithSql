@@ -29,6 +29,16 @@ This is the User orders page where they can see their all orders and their statu
 The Cart Section
 <img width="960" alt="image" src="https://user-images.githubusercontent.com/85096129/232224582-c271f14b-417b-45a3-be69-734f0bc12350.png">
 
+Wait Wait Wait!!!!
+But what if a user A adds 10 quantity of some products in his cart but then after some other user B ordered some quantity of that same product and eventuallly the products quantity becomes less than the product quantity of user A which he or she had in their cart then what 🤔🤔🤔
+
+Then this will happen
+<img width="960" alt="image" src="https://user-images.githubusercontent.com/85096129/232477514-f3a77364-0e35-455e-b553-d5f9240a56d6.png">
+After clicking View more
+<img width="960" alt="image" src="https://user-images.githubusercontent.com/85096129/232477595-c1d0794f-6d41-4cc2-8d94-44c65b1ee297.png">
+After clicking still want to order 
+<img width="960" alt="image" src="https://user-images.githubusercontent.com/85096129/232477650-d0315a9a-5c8b-4fcb-8da5-5c41d861a2bc.png">
+
 <img width="946" alt="image" src="https://user-images.githubusercontent.com/85096129/232224621-f1aa18f6-2da7-4a82-baf2-6557c859d402.png">
 
 User can also search their products in cart
